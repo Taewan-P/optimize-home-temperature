@@ -116,7 +116,7 @@ Each TODO follows RED-GREEN-REFACTOR:
    - Expected: PASS (still)
 
 **Test Setup Task (if infrastructure doesn't exist):**
-- [ ] 0. Setup Test Infrastructure
+- [x] 0. Setup Test Infrastructure
   - Install: `pip install pytest pytest-asyncio pytest-mock`
   - Config: Create `pytest.ini`
   - Verify: `pytest --version` → shows version

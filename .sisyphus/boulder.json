@@ -9,14 +9,32 @@
   "plan_name": "heater-optimization",
   "phase_1_complete": true,
   "phase_1_completion_date": "2026-02-02",
-  "blocked_tasks": [9, 10, 11],
-  "blocker_reason": "Tasks 9-11 require 2-4 weeks of sensor data collection before implementation can begin",
+  "status": "BLOCKED_USER_ACTION_REQUIRED",
+  "blocker_type": "deployment_and_data_collection",
+  "blocked_tasks": [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+  "blocker_reason": "All remaining tasks require system deployment and/or 2-4 weeks of data collection",
   "blocker_details": {
-    "task_9": "Thermal Model (1R1C) - needs 2+ weeks temperature/heater data",
-    "task_10": "MPC Controller - depends on Task 9 thermal model completion",
-    "task_11": "XGBoost ML Model - needs 4+ weeks operational data"
+    "task_0": "✅ COMPLETE - Test infrastructure exists (pytest 9.0.2, 91 tests collected)",
+    "tasks_1_8": "✅ COMPLETE - Phase 1 core infrastructure implemented and tested",
+    "tasks_9_11": "⏸️ BLOCKED - Require 2-4 weeks of sensor data collection (thermal model, MPC, ML)",
+    "tasks_12_23": "⏸️ BLOCKED - Final validation checklist requires deployed system running for 7+ days"
   },
-  "next_action": "Deploy system to production and begin data collection phase",
-  "tasks_completed": [1, 2, 3, 4, 5, 6, 7, 8],
-  "tasks_remaining": [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+  "user_action_required": {
+    "step_1": "Configure .env file with Home Assistant credentials (see .env.example)",
+    "step_2": "Deploy system: docker compose up -d",
+    "step_3": "Verify deployment: curl http://localhost:8080/health",
+    "step_4": "Monitor system for 2-4 weeks (data collection phase)",
+    "step_5": "Return to resume boulder continuation after data collection complete"
+  },
+  "resume_conditions": [
+    "System deployed and running in production",
+    "2+ weeks of temperature/heater data collected for Task 9",
+    "4+ weeks of data collected for Task 11",
+    "User ready to proceed with Phase 2 implementation"
+  ],
+  "next_action": "🚨 BOULDER CANNOT CONTINUE - User must deploy system per DEPLOYMENT.md",
+  "tasks_completed": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  "tasks_remaining": [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+  "automation_possible": false,
+  "reason_for_pause": "Phase 1 (infrastructure) complete. Phase 2+ requires real-world deployment and data collection which requires user credentials and monitoring."
 }
