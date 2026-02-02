@@ -60,17 +60,41 @@ class HaClient:
     RETRY_DELAYS = [1, 2, 4]
     MAX_RETRIES = 3
 
-    def __init__(self, base_url: str, token: str):
+    def __init__(
+        self,
+        base_url: str,
+        token: str,
+        cf_client_id: Optional[str] = None,
+        cf_client_secret: Optional[str] = None,
+    ):
         self.base_url = base_url.rstrip("/")
         self.token = token
+        self.cf_client_id = cf_client_id
+        self.cf_client_secret = cf_client_secret
         self._session: Optional[aiohttp.ClientSession] = None
 
     @classmethod
     def from_env(cls) -> HaClient:
-        """Create client from HA_URL and HA_TOKEN environment variables."""
+        """Create client from environment variables.
+
+        Required:
+            HA_URL: Home Assistant URL
+            HA_TOKEN: Long-lived access token
+
+        Optional (for Cloudflare Access):
+            CF_ACCESS_CLIENT_ID: Cloudflare Access client ID
+            CF_ACCESS_CLIENT_SECRET: Cloudflare Access client secret
+        """
         base_url = os.environ["HA_URL"]
         token = os.environ["HA_TOKEN"]
-        return cls(base_url=base_url, token=token)
+        cf_client_id = os.environ.get("CF_ACCESS_CLIENT_ID")
+        cf_client_secret = os.environ.get("CF_ACCESS_CLIENT_SECRET")
+        return cls(
+            base_url=base_url,
+            token=token,
+            cf_client_id=cf_client_id,
+            cf_client_secret=cf_client_secret,
+        )
 
     async def __aenter__(self) -> HaClient:
         self._session = aiohttp.ClientSession()
@@ -81,10 +105,16 @@ class HaClient:
             await self._session.close()
 
     def _get_headers(self) -> dict[str, str]:
-        return {
+        headers = {
             "Authorization": f"Bearer {self.token}",
             "Content-Type": "application/json",
         }
+
+        if self.cf_client_id and self.cf_client_secret:
+            headers["CF-Access-Client-Id"] = self.cf_client_id
+            headers["CF-Access-Client-Secret"] = self.cf_client_secret
+
+        return headers
 
     async def _make_request(
         self,
@@ -109,9 +139,7 @@ class HaClient:
                 )
 
                 if self._session is None:
-                    raise HaApiError(
-                        "Client session not initialized. Use async context manager."
-                    )
+                    raise HaApiError("Client session not initialized. Use async context manager.")
 
                 response = await self._execute_request(method, url, headers, data)
                 return await self._handle_response(response)
@@ -131,9 +159,7 @@ class HaClient:
                     )
                     await asyncio.sleep(delay)
 
-        raise HaApiError(
-            f"Request failed after {self.MAX_RETRIES} attempts: {last_error}"
-        )
+        raise HaApiError(f"Request failed after {self.MAX_RETRIES} attempts: {last_error}")
 
     async def _execute_request(
         self,
