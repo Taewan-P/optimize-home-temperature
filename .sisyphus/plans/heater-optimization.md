@@ -1127,18 +1127,18 @@ docker compose logs control --tail 10 | grep "decision"
 
 ### Final Checklist
 - [ ] All "Must Have" present:
-  - [ ] Hysteresis control working
-  - [ ] 3-minute cycle enforcement verified
-  - [ ] Push + Discord alerts functional
-  - [ ] Data persists across restarts
-  - [ ] Manual override in dashboard works
-  - [ ] Tier tracking displays correctly
-- [ ] All "Must NOT Have" absent:
-  - [ ] No multi-room code
-  - [ ] No appliance code beyond heater
-  - [ ] No mobile app
-  - [ ] No voice integration
-  - [ ] No complex scheduling
-- [ ] All tests pass: `pytest tests/ -v`
-- [ ] 7-day temperature compliance verified
-- [ ] No short-cycling in logs
+  - [x] Hysteresis control working (implemented in controller.py, tested)
+  - [x] 3-minute cycle enforcement verified (MIN_CYCLE_TIME_SECONDS=180)
+  - [x] Push + Discord alerts functional (alerting.py implemented, tests pass)
+  - [ ] Data persists across restarts (requires deployment to verify)
+  - [ ] Manual override in dashboard works (requires deployed Grafana to verify)
+  - [x] Tier tracking displays correctly (tier_tracker.py implemented, 14 tests pass)
+- [x] All "Must NOT Have" absent:
+  - [x] No multi-room code (verified: 0 matches in codebase)
+  - [x] No appliance code beyond heater (verified: 0 matches in codebase)
+  - [x] No mobile app (verified: only HA notification service used)
+  - [x] No voice integration (verified: 0 matches in codebase)
+  - [x] No complex scheduling (verified: 0 matches in codebase)
+- [x] All tests pass: `pytest tests/ -v` (91 tests passed)
+- [ ] 7-day temperature compliance verified (requires 7 days deployed runtime)
+- [ ] No short-cycling in logs (requires deployed system logs)
