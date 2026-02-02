@@ -36,6 +36,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: heater-data-collector
+    command: ["python", "-m", "src.data_collector_main"]
     ports:
       - "8081:8081"
     environment:
@@ -45,16 +46,24 @@ services:
       - INFLUX_TOKEN=${INFLUX_TOKEN}
       - INFLUX_ORG=${INFLUX_ORG}
       - INFLUX_BUCKET=${INFLUX_BUCKET}
+      - HA_TEMP_SENSOR_ID=${HA_TEMP_SENSOR_ID}
+      - HA_HUMIDITY_SENSOR_ID=${HA_HUMIDITY_SENSOR_ID}
+      - HA_HEATER_CLIMATE_ID=${HA_HEATER_CLIMATE_ID}
+      - HA_WEATHER_ENTITY_ID=${HA_WEATHER_ENTITY_ID}
+      - HA_ELECTRICITY_SENSOR_ID=${HA_ELECTRICITY_SENSOR_ID}
+      - TEMP_POLL_INTERVAL_SECONDS=${TEMP_POLL_INTERVAL_SECONDS:-60}
+      - WEATHER_POLL_INTERVAL_SECONDS=${WEATHER_POLL_INTERVAL_SECONDS:-300}
+      - ELECTRICITY_POLL_INTERVAL_SECONDS=${ELECTRICITY_POLL_INTERVAL_SECONDS:-86400}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
     env_file:
       - .env
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      test: ["CMD", "ps", "aux", "|", "grep", "-v", "grep", "|", "grep", "data_collector_main"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 5s
+      start_period: 10s
     networks:
       - heater-network
     depends_on:
