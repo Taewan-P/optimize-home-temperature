@@ -374,7 +374,7 @@ Parallel Speedup: ~45% faster than sequential
 
 ---
 
-- [ ] 3. Data Collection Service
+- [x] 3. Data Collection Service
 
   **What to do**:
   - Create data collector service that polls HA sensors
@@ -454,7 +454,7 @@ Parallel Speedup: ~45% faster than sequential
 
 ---
 
-- [ ] 4. Grafana Dashboard Setup
+- [x] 4. Grafana Dashboard Setup
 
   **What to do**:
   - Create Grafana dashboard JSON with panels:
@@ -533,7 +533,7 @@ Parallel Speedup: ~45% faster than sequential
 
 ---
 
-- [ ] 5. Control Service with Hysteresis Logic
+- [x] 5. Control Service with Hysteresis Logic
 
   **What to do**:
   - Create control service implementing state machine:
@@ -621,7 +621,7 @@ Parallel Speedup: ~45% faster than sequential
 
 ---
 
-- [ ] 6. Electricity Tier Tracker
+- [x] 6. Electricity Tier Tracker
 
   **What to do**:
   - Create tier tracking module that:
@@ -780,7 +780,7 @@ Parallel Speedup: ~45% faster than sequential
 
 ---
 
-- [ ] 8. Integration Testing + Validation
+- [x] 8. Integration Testing + Validation
 
   **What to do**:
   - Create end-to-end integration tests:
